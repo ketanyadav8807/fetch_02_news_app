@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New_app_03_HOME</title>
+    <style>
+      body {
+        background-color: rgba(29, 24, 24, 0.877);
+        color: mintcream;
+        font-family: serif;
+      }
+      #content {
+        border: unset;
+        margin: unset;
+        margin: auto;
+        margin-top: 20px;
+        width: 60%;
+        margin-top: 40px;
+      }
+      div {
+        border: 2px solid mintcream;
+        width: 100%;
+        margin: auto;
+        margin-top: 20px;
+      }
+      div > img {
+        border: 1px solid;
+        width: 100%;
+      }
+      div > h1 {
+        margin-left: 1%;
+      }
+      p {
+        margin-left: 1%;
+        font-size: 20px;
+        letter-spacing: 1px;
+        word-spacing: 2px;
+      }
+      .main {
+        margin: unset;
+        border: unset;
+        width: unset;
+        display: flex;
+        padding: 1%;
+        background-color: mintcream;
+        color: black;
+      }
+      #sports,
+      #entertainment,
+      #technology,
+      #home,
+      #search-box,
+      #search-button {
+        font-size: 30px;
+        text-decoration: underline;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 700;
+        font-family: cursive;
+      }
+      .search-div {
+        display: flex;
+        width: 90%;
+      }
+      #search-box {
+        width: 70%;
+        border-radius: 20px 10px;
+      }
+      #search-button {
+        margin-left: 2%;
+        border-radius: 20px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="search-div">
+        <input type="text" id="search-box" />
+        <button id="search-button">Search</button>
+      </div>
+      <div id="home"><a href="../fetch_II/home.html">HOME</a></div>
+      <div id="sports"><a href="../fetch_II/sports.html">SPORTS</a></div>
+      <div id="entertainment">
+        <a href="../fetch_II/entertainment.html">ENTERTAINMENT</a>
+      </div>
+      <div id="technology">
+        <a href="../fetch_II/technology.html">TECHNOLOGY</a>
+      </div>
+    </div>
+    <div id="content"></div>
+    <script type="text/javascript">
+      var contentDiv = document.getElementById("content");
+      var button = document.getElementById("search-button");
+
+      button.addEventListener("click", function () {
+        var search = document.getElementById("search-box");
+        console.log(search.value);
+        contentDiv.innerHTML = "";
+        fetch(
+          `https://newsapi.org/v2/everything?q=${search.value}&apiKey=e2c7a8639b0748deb165184de10db0f3`
+        )
+          .then(function (response) {
+            search.value = "";
+            return response.json();
+          })
+          .then(function (response) {
+            for (let i = 0; i < 10; i++) {
+              var div = document.createElement("div");
+              var h1 = document.createElement("h1");
+              var image = document.createElement("img");
+              var para = document.createElement("p");
+
+              h1.textContent = response.articles[i].title;
+              image.src = response.articles[i].urlToImage;
+              para.textContent = response.articles[i].description;
+
+              div.append(h1, image, para);
+
+              contentDiv.append(div);
+            }
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      });
+
+      fetch(
+        "https://newsapi.org/v2/top-headlines?country=in&apiKey=e2c7a8639b0748deb165184de10db0f3"
+      )
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (response) {
+          for (let i = 0; i < 10; i++) {
+            var div = document.createElement("div");
+            var h1 = document.createElement("h1");
+            var image = document.createElement("img");
+            var para = document.createElement("p");
+
+            h1.textContent = response.articles[i].title;
+            image.src = response.articles[i].urlToImage;
+            para.textContent = response.articles[i].description;
+
+            div.append(h1, image, para);
+
+            contentDiv.append(div);
+          }
+          console.log(response.articles);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    </script>
+  </body>
+</html>

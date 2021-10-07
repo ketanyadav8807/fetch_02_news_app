@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New_app_01</title>
+    <style>
+        body{
+            background-color:rgba(29, 24, 24, 0.877);
+            color: mintcream;
+            font-family: serif;
+        }
+       div{
+           border: 2px solid mintcream;
+           width: 60%;
+           margin: auto;
+           margin-top: 20px;
+       }
+       div > img{
+           border: 1px solid;
+           width: 100%;
+       }
+       div > h1{
+        margin-left: 1%;
+       }
+       p{
+           margin-left: 1%;
+           font-size: 20px;
+           letter-spacing: 1px;
+           word-spacing: 2px;
+       }
+       .main{
+           background-color: mintcream;
+           padding: 0.5%;
+           text-align: center;
+           color: black;
+           font-size: 40px;
+       }
+    </style>
+  </head>
+  <body>
+    <h1 class="main">Top 10 headlines from India</h1>
+    <script type="text/javascript">
+
+      fetch(
+        "https://newsapi.org/v2/top-headlines?country=in&apiKey=e2c7a8639b0748deb165184de10db0f3"
+      )
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (response) {
+
+          for (let i = 0; i < 10; i++) {
+
+            var div = document.createElement("div");
+            var h1 = document.createElement("h1");
+            var image = document.createElement("img");
+            var para = document.createElement("p");
+
+
+           h1.textContent = response.articles[i].title;
+           image.src = response.articles[i].urlToImage;
+           para.textContent = response.articles[i].description;
+
+           
+
+           div.append(h1,image,para);
+
+            document.body.append(div);
+          }
+           console.log(response.articles)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    </script>
+  </body>
+</html>
